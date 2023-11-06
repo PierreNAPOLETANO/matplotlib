@@ -465,19 +465,9 @@ def update_sig_from_node(node, sig):
         annotation = direct_repr(ast.unparse(param.annotation))
         params[param.arg] = params[param.arg].replace(annotation=annotation)
 
-    if node.returns is not None:
-        return inspect.Signature(
-            params.values(),
-            return_annotation=direct_repr(ast.unparse(node.returns))
-        )
-    else:
-        return inspect.Signature(params.values())
+    return inspect.Signature(params.values(), return_annotation=direct_repr(ast.unparse(node.returns))) if node.returns is not None else inspect.Signature(params.values())
 
 
 if __name__ == '__main__':
-    # Write the matplotlib.pyplot file.
-    if len(sys.argv) > 1:
-        pyplot_path = Path(sys.argv[1])
-    else:
-        pyplot_path = Path(__file__).parent / "../lib/matplotlib/pyplot.py"
+    pyplot_path = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).parent / "../lib/matplotlib/pyplot.py"
     build_pyplot(pyplot_path)

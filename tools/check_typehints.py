@@ -129,10 +129,7 @@ def check_namespace(tree, stubtree, path, ignore=0):
     except ValueError:
         all_ = []
 
-    if all_:
-        missing = (tree_items - stubtree_items) & set(all_)
-    else:
-        missing = tree_items - stubtree_items
+    missing = (tree_items - stubtree_items) & set(all_) if all_ else tree_items - stubtree_items
 
     deprecated = set()
     for item_name in missing:

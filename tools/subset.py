@@ -395,10 +395,7 @@ def main(argv):
 
     font_in, font_out = args
     opts = dict(optlist)
-    if '--string' in opts:
-        subset = map(ord, opts['--string'])
-    else:
-        subset = getsubset(opts.get('--subset', 'latin'), font_in)
+    subset = map(ord, opts['--string']) if '--string' in opts else getsubset(opts.get('--subset', 'latin'), font_in)
     subset_font(font_in, font_out, subset, opts)
 
 

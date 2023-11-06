@@ -56,8 +56,7 @@ def save_icon(fig, dest_dir, name, add_black_fg_color):
 def make_icon(font_path, ccode):
     fig = plt.figure(figsize=(1, 1))
     fig.patch.set_alpha(0.0)
-    fig.text(0.5, 0.48, chr(ccode), ha='center', va='center',
-             font=font_path, fontsize=68)
+    fig.text(0.5, 0.48, chr(ccode), ha='center', va='center', font=font_path, fontsize=68)
     return fig
 
 
@@ -72,14 +71,12 @@ def make_matplotlib_icon():
     theta = np.arange(0, arc, arc / N)
     radii = 10 * np.array([0.2, 0.6, 0.8, 0.7, 0.4, 0.5, 0.8])
     width = np.pi / 4 * np.array([0.4, 0.4, 0.6, 0.8, 0.2, 0.5, 0.3])
-    bars = ax.bar(theta, radii, width=width, bottom=0.0, linewidth=1,
-                  edgecolor='k')
+    bars = ax.bar(theta, radii, width=width, bottom=0.0, linewidth=1, edgecolor='k')
 
     for r, bar in zip(radii, bars):
         bar.set_facecolor(mpl.cm.jet(r / 10))
 
-    ax.tick_params(labelleft=False, labelright=False,
-                   labelbottom=False, labeltop=False)
+    ax.tick_params(labelleft=False, labelright=False, labelbottom=False, labeltop=False)
     ax.grid(lw=0.0)
 
     ax.set_yticks(np.arange(1, 9, 2))

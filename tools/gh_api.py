@@ -100,10 +100,7 @@ def get_pull_request(project, num, auth=False):
     """get pull request info  by number
     """
     url = f"https://api.github.com/repos/{project}/pulls/{num}"
-    if auth:
-        header = make_auth_header()
-    else:
-        header = None
+    auth_header(auth)
     print("fetching %s" % url, file=sys.stderr)
     response = requests.get(url, headers=header)
     response.raise_for_status()
@@ -112,10 +109,7 @@ def get_pull_request(project, num, auth=False):
 def get_pull_request_files(project, num, auth=False):
     """get list of files in a pull request"""
     url = f"https://api.github.com/repos/{project}/pulls/{num}/files"
-    if auth:
-        header = make_auth_header()
-    else:
-        header = None
+    auth_header(auth)
     return get_paged_request(url, headers=header)
 
 element_pat = re.compile(r'<(.+?)>')
@@ -144,10 +138,7 @@ def get_pulls_list(project, auth=False, **params):
     """get pull request list"""
     params.setdefault("state", "closed")
     url = f"https://api.github.com/repos/{project}/pulls"
-    if auth:
-        headers = make_auth_header()
-    else:
-        headers = None
+    auth_header(auth)
     pages = get_paged_request(url, headers=headers, **params)
     return pages
 
@@ -155,20 +146,14 @@ def get_issues_list(project, auth=False, **params):
     """get issues list"""
     params.setdefault("state", "closed")
     url = f"https://api.github.com/repos/{project}/issues"
-    if auth:
-        headers = make_auth_header()
-    else:
-        headers = None
+    auth_header(auth)
     pages = get_paged_request(url, headers=headers, **params)
     return pages
 
 def get_milestones(project, auth=False, **params):
     params.setdefault('state', 'all')
     url = f"https://api.github.com/repos/{project}/milestones"
-    if auth:
-        headers = make_auth_header()
-    else:
-        headers = None
+    auth_header(auth)
     milestones = get_paged_request(url, headers=headers, **params)
     return milestones
 
@@ -200,9 +185,7 @@ def get_authors(pr):
 
 def iter_fields(fields):
     fields = fields.copy()
-    for key in [
-            'key', 'acl', 'Filename', 'success_action_status',
-            'AWSAccessKeyId', 'Policy', 'Signature', 'Content-Type', 'file']:
+    for key in ['key', 'acl', 'Filename', 'success_action_status', 'AWSAccessKeyId', 'Policy', 'Signature', 'Content-Type', 'file']:
         yield key, fields.pop(key)
     yield from fields.items()
 
@@ -292,3 +275,7 @@ def post_download(project, filename, name=None, description=""):
     data, content_type = encode_multipart_formdata(fields)
     s3r = requests.post(s3_url, data=data, headers={'Content-Type': content_type})
     return s3r
+
+
+def auth_header(auth):
+    header = make_auth_header() if auth else None

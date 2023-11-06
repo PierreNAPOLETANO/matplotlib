@@ -134,20 +134,12 @@ static PyObject *Py_update_path_extents(PyObject *self, PyObject *args)
     if (ignore) {
         CALL_CPP("update_path_extents", reset_limits(e));
     } else {
-        if (rect.x1 > rect.x2) {
-            e.x0 = std::numeric_limits<double>::infinity();
-            e.x1 = -std::numeric_limits<double>::infinity();
-        } else {
-            e.x0 = rect.x1;
-            e.x1 = rect.x2;
-        }
-        if (rect.y1 > rect.y2) {
-            e.y0 = std::numeric_limits<double>::infinity();
-            e.y1 = -std::numeric_limits<double>::infinity();
-        } else {
-            e.y0 = rect.y1;
-            e.y1 = rect.y2;
-        }
+        e.x0 = rect.x1 > rect.x2 ? td::numeric_limits<double>::infinity() : rect.x1;
+        e.x1 = rect.x1 > rect.x2 ? -std::numeric_limits<double>::infinity() : rect.x2;
+
+        e.y0 = rect.y1 > rect.y2 ? std::numeric_limits<double>::infinity() : rect.y1;
+        e.y1 = rect.y1 > rect.y2 ? -std::numeric_limits<double>::infinity() : rect.y2;
+
         e.xm = minpos(0);
         e.ym = minpos(1);
     }
@@ -778,3 +770,6 @@ PyMODINIT_FUNC PyInit__path(void)
     import_array();
     return PyModule_Create(&moduledef);
 }
+
+
+ 

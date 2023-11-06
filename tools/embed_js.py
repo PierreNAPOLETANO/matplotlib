@@ -90,13 +90,6 @@ def build_mpljs(web_backend_path, license_path):
 
 if __name__ == '__main__':
     # Write the mpl.js file.
-    if len(sys.argv) > 1:
-        web_backend_path = Path(sys.argv[1])
-    else:
-        web_backend_path = (Path(__file__).parent.parent /
-                            "lib/matplotlib/backends/web_backend")
-    if len(sys.argv) > 2:
-        license_path = Path(sys.argv[2])
-    else:
-        license_path = Path(__file__).parent.parent / "LICENSE"
+    web_backend_path = Path(sys.argv[1]) if len(sys.argv) > 1 else (Path(__file__).parent.parent / "lib/matplotlib/backends/web_backend")
+    license_path = Path(sys.argv[2]) if len(sys.argv) > 2 else Path(__file__).parent.parent / "LICENSE"
     build_mpljs(web_backend_path, license_path)
